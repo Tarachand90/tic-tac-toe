@@ -8,15 +8,16 @@ interface PlayerProps {
 const Player = ({ name, symbol }: PlayerProps) => {
   const [isEditing, setIsEditing] = useState(false);
 
-  const editingMsg = !isEditing ? "Edit" : "Save";
   const handleEditClick = () => {
-    setIsEditing(!isEditing);
+    setIsEditing((prevIsEditing) => !prevIsEditing);
   };
 
   let playerName = <span className="player-name">{name}</span>;
+  let btnCaption = "Edit";
 
   if (isEditing) {
     playerName = <input type="text" required />;
+    btnCaption = "Save";
   }
   return (
     <li>
@@ -24,7 +25,7 @@ const Player = ({ name, symbol }: PlayerProps) => {
         {playerName}
         <span className="player-symbol">{symbol}</span>
       </span>
-      <button onClick={handleEditClick}>{editingMsg}</button>
+      <button onClick={handleEditClick}>{btnCaption}</button>
     </li>
   );
 };
