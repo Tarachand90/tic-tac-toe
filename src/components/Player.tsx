@@ -1,12 +1,17 @@
-import React, { SetStateAction, useState } from "react";
+import React, { useState } from "react";
+import { PlayerSymbol } from "./PlayerSymbol";
 
 interface PlayerProps {
-  name: string;
-  symbol: string;
+  name: string; // The player's name.
+  symbol: PlayerSymbol;
+  isActive: boolean; // Indicates whether the player is currently active.
 }
 
-const Player = ({ name, symbol }: PlayerProps) => {
+const Player = ({ name, symbol, isActive }: PlayerProps) => {
+  //Manages whether the player name is being edited
   const [isEditing, setIsEditing] = useState(false);
+
+  // Stores the player's name (which can be edited).
   const [playerName, setPlayerName] = useState(name);
 
   const handleEditClick = () => {
@@ -27,7 +32,7 @@ const Player = ({ name, symbol }: PlayerProps) => {
     btnCaption = "Save";
   }
   return (
-    <li>
+    <li className={isActive ? "active" : undefined}>
       <span className="player">
         {editiablePlayerName}
         <span className="player-symbol">{symbol}</span>

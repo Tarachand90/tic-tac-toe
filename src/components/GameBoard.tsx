@@ -1,6 +1,10 @@
 import { useState } from "react";
+import { PlayerSymbol } from "./PlayerSymbol";
 
-type PlayerSymbol = null | "X" | "O";
+interface GameBoardProps {
+  onSelectSquare: () => void; //A callback function to switch the active player.
+  activePlayerSymbol: PlayerSymbol;
+}
 
 const initialGameBoard: PlayerSymbol[][] = [
   [null, null, null],
@@ -8,17 +12,24 @@ const initialGameBoard: PlayerSymbol[][] = [
   [null, null, null],
 ];
 
-const GameBoard = () => {
+const GameBoard = ({ onSelectSquare, activePlayerSymbol }: GameBoardProps) => {
   const [gameBoard, setGameBoard] =
     useState<PlayerSymbol[][]>(initialGameBoard);
+
+  // Prevents overwriting an already-filled square.
+  // Updates the board with the symbol of the active player.
+  // Calls onSelectSquare to switch the active player.
 
   const handleSelectedSquare = (rowIndex: number, colIndex: number) => {
     setGameBoard((prevGameBoard) => {
       if (prevGameBoard[rowIndex][colIndex] !== null) return prevGameBoard; // Prevent overwriting
       return prevGameBoard.map((row, r) =>
-        row.map((cell, c) => (r === rowIndex && c === colIndex ? "X" : cell))
+        row.map((cell, c) =>
+          r === rowIndex && c === colIndex ? activePlayerSymbol : cell
+        )
       );
     });
+    onSelectSquare();
   };
 
   return (
