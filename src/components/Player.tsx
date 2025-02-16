@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { SetStateAction, useState } from "react";
 
 interface PlayerProps {
   name: string;
@@ -7,22 +7,29 @@ interface PlayerProps {
 
 const Player = ({ name, symbol }: PlayerProps) => {
   const [isEditing, setIsEditing] = useState(false);
+  const [playerName, setPlayerName] = useState(name);
 
   const handleEditClick = () => {
     setIsEditing((prevIsEditing) => !prevIsEditing);
   };
 
-  let playerName = <span className="player-name">{name}</span>;
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPlayerName(e.target.value);
+  };
+
+  let editiablePlayerName = <span className="player-name">{playerName}</span>;
   let btnCaption = "Edit";
 
   if (isEditing) {
-    playerName = <input type="text" required />;
+    editiablePlayerName = (
+      <input type="text" required value={playerName} onChange={handleChange} />
+    );
     btnCaption = "Save";
   }
   return (
     <li>
       <span className="player">
-        {playerName}
+        {editiablePlayerName}
         <span className="player-symbol">{symbol}</span>
       </span>
       <button onClick={handleEditClick}>{btnCaption}</button>
